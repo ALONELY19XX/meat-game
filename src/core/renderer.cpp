@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-using namespace meat;
+using namespace meat::core;
 
 auto Renderer::destroy() -> void {
    m_renderer.reset();
@@ -11,7 +11,7 @@ auto Renderer::set_renderer(SDL_Renderer* renderer) -> void {
 }
 
 auto Renderer::clear_background() const -> void {
-   SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0xFF, 0xFF, 0xFF);
+   SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0x00, 0x00, 0xFF);
    SDL_RenderClear(m_renderer.get());
 }
 

@@ -4,8 +4,7 @@
 #include <string>
 #include <SDL3/SDL.h>
 
-namespace meat {
-
+namespace meat::core {
    struct WindowProperties {
       std::string title;
       int width;

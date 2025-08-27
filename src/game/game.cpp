@@ -21,7 +21,7 @@ auto Game::init() -> bool {
       m_window.properties.title.c_str(),
       m_window.properties.width,
       m_window.properties.height,
-      SDL_WINDOW_RESIZABLE,
+      m_window.properties.flags,
       &window,
       &renderer
    );
@@ -34,23 +34,26 @@ auto Game::init() -> bool {
    m_window.set_window(window);
    m_renderer.set_renderer(renderer);
 
+   m_running = true;
+   m_last_frame_time = SDL_GetTicks();
+
    return true;
 }
 
 auto Game::run() -> void {
    while (m_running) {
-      SDL_Event event;
-      while (SDL_PollEvent(&event)) {
-         if (event.type == SDL_EVENT_QUIT) {
-            m_running = false;
-            break;
-         }
-      }
+      m_input_system.handle_events();
 
+      if (m_input_system.should_quit()) {
+         m_running = false;
+         break;
+      };
+
+      update();
       m_renderer.clear_background();
       m_renderer.present();
 
-      SDL_Delay(1000 / 60);
+      wait_remaining_frame_time();
    }
 }
 
@@ -58,4 +61,19 @@ auto Game::shutdown() -> void {
    m_renderer.destroy();
    m_window.destroy();
    SDL_Quit();
+}
+
+auto Game::elapsed_time_since_last_frame() const -> uint64_t {
+   return SDL_GetTicks() - m_last_frame_time;
+}
+
+auto Game::update() -> void {
+   m_last_frame_time = SDL_GetTicks();
+}
+
+auto Game::wait_remaining_frame_time() const -> void {
+   const auto elapsed_time = elapsed_time_since_last_frame();
+   if (elapsed_time < TARGET_FRAME_TIME) {
+      SDL_Delay(TARGET_FRAME_TIME - elapsed_time);
+   }
 }

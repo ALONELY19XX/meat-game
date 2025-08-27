@@ -1,6 +1,6 @@
 #include "window.h"
 
-using namespace meat;
+using namespace meat::core;
 
 
 Window::Window() : properties{"MEAT", 1000, 800, SDL_WINDOW_RESIZABLE} {}

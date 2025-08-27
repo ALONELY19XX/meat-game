@@ -12,6 +12,7 @@ add_executable(${TARGET_NAME}
         src/core/window.cpp
         src/core/renderer.cpp
         src/game/game.cpp
+        src/systems/input_system.cpp
 )
 
 find_package(SDL3 REQUIRED)
